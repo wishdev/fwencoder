@@ -48,6 +48,15 @@ func Marshal(v interface{}) ([]byte, error) {
 	return buf.Bytes(), err
 }
 
+// MarshalWriterEOFNewline behaves the same as MarshalWriter, but writes newline at EOF
+func MarshalWriterEOFNewline(writer io.Writer, v interface{}) (err error) {
+	defer func() {
+		writer.Write([]byte("\n"))
+	}()
+
+	return MarshalWriter(writer, v)
+}
+
 // MarshalWriter behaves the same as Marshal, but write data into io.Writer
 func MarshalWriter(writer io.Writer, v interface{}) (err error) {
 	defer func() {
